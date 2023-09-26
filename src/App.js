@@ -79,6 +79,9 @@ function App() {
   }
 
   const handleSignUp = (e)=>{
+
+    e.preventDefault()
+    
     if(name || email || password || confirmPassword)
     {
       if(isNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid)
