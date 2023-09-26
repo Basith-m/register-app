@@ -1,216 +1,154 @@
-// import './App.css';
-
-// function App() {
-//   return (
-//     <div style={{height:'100vh', background: 'linear-gradient(to right, #FFC0CB, #8A2BE2, #FFC0CB)'}}  className='d-flex justify-content-center align-items-center w-100'>
-//         <div style={{width:'400px'}} className='bg-light rounded'>
-//           <h1 className='text-center'>Register</h1>
-//         </div>
-//     </div>
-//   );
-// }
-
-// export default App;
-
-
-import { TextField, Button } from "@mui/material";
-import "./App.css";
-import { useState } from "react";
+import { useState } from 'react';
+import './App.css';
+import { TextField , Button } from '@mui/material';
 
 function App() {
+
+  // creating state
 
   const [name,setName] = useState("")
   const [email,setEmail] = useState("")
   const [password,setPassword] = useState("")
-  const [confirm,setConfirmPassword] = useState("")
-
+  const [confirmPassword,setConfirmPassword] = useState("")
   const [isNameValid,setIsNameValid] = useState(true)
   const [isEmailValid,setIsEmailValid] = useState(true)
   const [isPasswordValid,setIsPasswordValid] = useState(true)
-  const [isConfirmValid,setIsConfirmValid] = useState(true)
+  const [isConfirmPasswordValid,setIsConfirmPasswordValid] = useState(true)
 
-  // form
-  
-  // name Validation
-  const validateInput = (e)=>{
-
+  // Name Validation
+  const validateName = (e)=> {
     const {value} = e.target
 
-    if(!! value.match(/^([a-zA-Z ]){2,30}$/)){
-        setName(value)
-        setIsNameValid(true)
-    }else{
-        setName(value)
-        setIsNameValid(false)
+    if(!! value.match(/^[A-Za-z\s.'-]+$/))
+    {
+      setName(value)
+      setIsNameValid(true)
     }
-
+    else
+    {
+      setName(value)
+      setIsNameValid(false)
+    }
   }
 
-   // email validation
-   const validateEmail = (e)=>{
-
+  // email validation
+  const validateEmail = (e)=> {
     const {value} = e.target
 
-    if(!!value.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/) ){
-        setEmail(value)
-        setIsEmailValid(true)
-    }else{
-        setEmail(value)
-        setIsEmailValid(false)
+    if(!! value.match(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/))
+    {
+      setEmail(value)
+      setIsEmailValid(true)
     }
+    else
+    {
+      setEmail(value)
+      setIsEmailValid(false)
+    }
+  }
 
-   }
-
-
-  //  password validation
+  // password validation
   const validatePassword = (e)=>{
-
     const {value} = e.target
 
-    if(value.length >= 8 ){
+    if(value.length >= 8)
+    {
       setPassword(value)
-      setIsPasswordValid(true)}
-    else{
-      setPassword(value)
-      setIsPasswordValid(false)
+      setIsPasswordValid(true)
     }
-
-   }
-  
-  // passwordConfirm validation
-  const validateConfirm = (e)=>{
-
-    const {value} = e.target
-
-    if(value === password){
-      setConfirmPassword(value)
-      setIsConfirmValid(true)
-    }else{
-      setConfirmPassword(value)
-      setIsConfirmValid(false)
+    else
+    {
+      setPassword(value)
+      setIsPasswordValid(false) 
     }
   }
 
-  // alert show
-  const showDetails = (e)=>{
-    e.preventDefault()
+  // Confirm Password Validation
+  const validateConfirmPassword = (e)=>{
+    const {value} = e.target
 
-    if(!name || !email || !password || !confirm ){
-      alert("Fill the Form Compeletly..")
-    }else{
-      if(isNameValid && isEmailValid && isPasswordValid){
-        alert(
-          `...User Profile....
-  
-  
-          Name : ${name}
-  
-          Email : ${email}
-  
-          Password : ${password}
-          `
-          )
-
-      }else{
-        alert("Please Complete form Properly..!!")
-      }
-    
+    if(value === password)
+    {
+      setConfirmPassword(value)
+      setIsConfirmPasswordValid(true)
     }
+    else{
+      setConfirmPassword(value)
+      setIsConfirmPasswordValid(false)
+    }
+  }
 
-  } 
-  
+  const handleSignUp = (e)=>{
+    if(name || email || password || confirmPassword)
+    {
+      if(isNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid)
+      {
+        alert(`
+          Congratulation ${name}
+          Now get start
+        `)
+      }
+      else
+      {
+        alert("Please fill the form completely!!!")
+      }
+    }
+    else{
+      alert("Please fill the form completely!!!")
+    }
+  }
 
   return (
+    <div style={{height:'100vh', background: 'linear-gradient(to right, #3498db, #9b59b6, #2ecc71)'
+  }} className="d-flex justify-content-center align-items-center w-100">
+    <div style={{width:'400px'}} className='bg-light rounded-5 '>
+      <h2 className='text-center pt-4 pb-2'>Register</h2>
+      <hr />
+      <form className='pt-2 px-5 pb-2' onSubmit={handleSignUp}>
+      <TextField name='name' id="standard-basic" label="Name" variant="standard" className='w-100 mb-4' value={name || ""} onChange={(e)=>validateName(e)}/>
 
-    <div style={{ height: "100vh", background:'linear-gradient(to right, #E6E6FA, #0000FF, #E6E6FA)'}} className="d-flex justify-content-center align-items-center w-100" >
-      <div style={{ width: "450px" }} className="bg-light rounded-4">
-        <h1 className="text-center p-2">Register</h1>
-        <hr />
+      {
+        !isNameValid && 
+        <div className='mb-1 text-danger fw-bold'>
+          Invalid User name
+        </div>
+      }
 
-        <form onSubmit={showDetails} className="p-5 pt-2">
+      <TextField name='email' id="standard-basic" label="Email" variant="standard" className='w-100 mb-4' value={email || ""} onChange={(e)=>validateEmail(e)} />
 
-          <div className="mb-5">
-            <TextField
-              className="w-100"
-              id="standard-basic"
-              label="Name"
-              variant="standard" name="name" value={ name || "" } onChange={(e)=>validateInput(e)}/>
+      {
+        !isEmailValid &&
+        <div className='mb-1 text-danger fw-bold'>
+        Invalid Email
+        </div>
+      }
 
-              {
-                !isNameValid && 
-                <div className=" text-danger fw-bolder">
-                 Invalid User Name
-                </div>
-              }
-          </div>
-      
+      <TextField name='password' id="standard-basic" label="Password" variant="standard" className='w-100 mb-4' value={password || ""} onChange={(e)=>validatePassword(e)} />
 
-          <div className="mb-5">
-            <TextField
-              className="w-100"
-              id="standard-basic"
-              label="Email"
-              type="email"
-              variant="standard" name="email" value={ email || "" } onChange={(e)=>validateEmail(e)} />
+      {
+        !isPasswordValid &&
+        <div className='mb-1 text-danger fw-bold'>
+        Password must be at least 8 characters
+        </div>
+      }
 
-              {
-                !isEmailValid && 
-                <div className=" text-danger fw-bolder">
-                 Invalid User Email
-                </div>
-              }
-          </div>
+      <TextField name='confirmPassword' id="standard-basic" label="Confirm Password" variant="standard" className='w-100 mb-3' value={confirmPassword || ""} onChange={(e)=>validateConfirmPassword(e)} />
 
-          <div className="mb-5">
-            <TextField
-              className="w-100"
-              id="standard-basic"
-              label="Password"
-              type="password"
-              variant="standard" name="password" value={ password || "" } onChange={(e)=>validatePassword(e)} />
-              {
-                !isPasswordValid && 
-                <div className=" text-danger fw-bolder">
-                 Password must be at least 8 characters 
-                </div>
-              }
-          </div>
+      {
+        !isConfirmPasswordValid &&
+        <div className='mb-1 text-danger fw-bold'>
+        Password doesn't match
+        </div>
+      }
 
-          <div className="mb-5">
-            <TextField
-              className="w-100"
-              id="standard-basic"
-              label="Confirm Password"
-              type="password"
-              variant="standard" name="confirm" value={ confirm || ""  } onChange={(e)=>validateConfirm(e)} />
-             
-              {
-                ! isConfirmValid && 
-                <div className=" text-danger fw-bolder">
-                 Password don't Match
-                </div>
-              }
-          </div>
-
-          <Button
-            type="submit"
-            className="w-100 rounded-5 p-3 text-dark border-dark"
-            variant="outlined">
-            <b>Sign Up</b>
-          </Button>
-
-          <div className="text-center pt-4">
-            Have an Account? 
-            <a className="text-decoration-none" href="index.html">
-              Login Here
-            </a>
-          </div>
-
-        </form>
-
-      </div>
+      <Button variant="outlined" type='submit' className='text-dark border-dark rounded-5 p-3 fw-bold w-100 mt-4 mb-4'>Sign Up</Button>
+      </form>
+      <p className='text-center mb-5'>Have an Account?<span className='text-primary'>Login Here</span></p>
     </div>
+  </div>
   );
 }
 
 export default App;
+
+
